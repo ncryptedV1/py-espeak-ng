@@ -31,7 +31,8 @@ class ESpeakNG(object):
                  line_length =           0, # Line length. If not zero, consider lines less than this length as end-of-clause
                  pitch       =          50, # 0-99
                  speed       =         175, # approx. words per minute 
-                 voice       = 'english-us'):
+                 voice       = 'english-us',
+                 ssml        =       False,):
 
 
         self._volume      = volume  
@@ -42,6 +43,7 @@ class ESpeakNG(object):
         self._pitch       = pitch      
         self._speed       = speed      
         self._voice       = voice      
+        self._ssml        = ssml
 
     def _espeak_exe(self, args, sync=False):
         cmd = ['espeak-ng', 
@@ -53,6 +55,9 @@ class ESpeakNG(object):
                '-v', self._voice, 
                '-b', '1', # UTF8 text encoding 
                ]
+        
+        if self._ssml:
+            cmd.extend(['-m'])
 
         if self._word_gap>=0:
             cmd.extend(['-g', str(self._word_gap)])
